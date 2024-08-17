@@ -2,35 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Main : MonoBehaviour
-{
+public class Main : MonoBehaviour {
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         Debug.Log(RomanToInt("IV"));
         Debug.Log(RomanToInt("IX"));
         Debug.Log(RomanToInt("LVIII"));
         Debug.Log(RomanToInt("MCMXCIV"));
+        Debug.Log(RomanToInt_1("MDL"));
 
-        // Debug.Log(LongestCommonPrefix(new string[] { "ABCDEFG", "ABCDE", "ABCD", "ABC" }));
+        Debug.Log(LongestCommonPrefix(new string[] { "ABCDEFG", "ABCDE", "ABCD", "ABC" }));
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
 
     }
 
 
     // 两数之和 等于 目标数
-    public static int[] TwoSum(int[] nums, int target)
-    {
-        for (int i = 0; i < nums.Length - 1; i++)
-        {
-            for (int j = i + 1; j < nums.Length; j++)
-            {
-                if (nums[i] + nums[j] == target)
-                {
+    public static int[] TwoSum(int[] nums, int target) {
+        for (int i = 0; i < nums.Length - 1; i++) {
+            for (int j = i + 1; j < nums.Length; j++) {
+                if (nums[i] + nums[j] == target) {
                     return new int[] { i, j };
                 }
             }
@@ -40,72 +34,54 @@ public class Main : MonoBehaviour
 
     // 回文数
     // - 我的思路
-    public static bool IsPalindrome_1(int x)
-    {
-        if (x < 0)
-        {
+    public static bool IsPalindrome_1(int x) {
+        if (x < 0) {
             return false;
         }
         List<byte> tarList = new List<byte>();
         // int 类型最多是10位数，有9个零，求得每位数的十进制数字，放进list
-        for (int i = 9; i >= 0; i--)
-        {
+        for (int i = 9; i >= 0; i--) {
             byte cur;
-            if (tarList.Count == 0)
-            {
+            if (tarList.Count == 0) {
                 cur = (byte)(x / Mathf.Pow(10, i));
-            }
-            else
-            {
+            } else {
                 int curX = x % (int)Mathf.Pow(10, i + 1);
                 cur = (byte)(curX / Mathf.Pow(10, i));
             }
-            if (tarList.Count == 0)
-            {
-                if (cur > 0)
-                {
+            if (tarList.Count == 0) {
+                if (cur > 0) {
                     tarList.Add(cur);
 
                 }
-            }
-            else
-            {
+            } else {
                 tarList.Add(cur);
             }
         }
 
-        if (tarList.Count == 0)
-        {
+        if (tarList.Count == 0) {
             // 说明这个数是0；
             return true;
         }
 
         int res = 0;
-        for (int i = 0; i < tarList.Count; i++)
-        {
+        for (int i = 0; i < tarList.Count; i++) {
             res += (int)Mathf.Pow(10, i) * tarList[i];
         }
         System.Console.WriteLine(res);
-        if (res == x)
-        {
+        if (res == x) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    public static bool IsPalindrome(int x)
-    {
+    public static bool IsPalindrome(int x) {
         // x小于0，或者，个位数是0（0%10也是0，所以要排除）
-        if (x < 0 || x % 10 == 0 && x != 0)
-        {
+        if (x < 0 || x % 10 == 0 && x != 0) {
             return false;
         }
         // 从x的个位数开始
         int revertedNumber = 0;
-        while (x > revertedNumber)
-        {
+        while (x > revertedNumber) {
             revertedNumber = revertedNumber * 10 + x % 10;
             x /= 10;
         }
@@ -115,104 +91,78 @@ public class Main : MonoBehaviour
     }
 
     // 罗马数字转整数
-    public static int RomanToInt_1(string s)
-    {
+    public static int RomanToInt_1(string s) {
         int res = 0;
         char[] chars = s.ToCharArray();
-        for (int i = 0; i < chars.Length; i++)
-        {
+        for (int i = 0; i < chars.Length; i++) {
             var cur = chars[i];
             int j = i + 1 < chars.Length ? i + 1 : -1;
             var next = 'A';
-            if (j != -1)
-            {
+            if (j != -1) {
                 next = chars[j];
             }
 
             // 剩最后一位
-            if (next == 'A')
-            {
-                if (cur == 'V')
-                {
+            if (next == 'A') {
+                if (cur == 'V') {
                     res += 5;
-                }
-                else if (cur == 'I')
-                {
+                } else if (cur == 'I') {
                     res += 1;
+                } else if (cur == 'X') {
+                    res += 10;
+                } else if (cur == 'L') {
+                    res += 50;
+                } else if (cur == 'C') {
+                    res += 100;
+                } else if (cur == 'D') {
+                    res += 500;
+                } else if (cur == 'M') {
+                    res += 1000;
                 }
                 return res;
             }
 
 
-            if (cur == 'I')
-            {
+            if (cur == 'I') {
 
-                if (next == 'V')
-                {
+                if (next == 'V') {
                     res += 4;
                     i++;
-                }
-                else if (next == 'X')
-                {
+                } else if (next == 'X') {
                     res += 9;
                     i++;
-                }
-                else
-                {
+                } else {
                     res += 1;
                 }
-            }
-            else if (cur == 'X')
-            {
-                if (next == 'L')
-                {
+            } else if (cur == 'X') {
+                if (next == 'L') {
                     res += 40;
                     i++;
-                }
-                else if (next == 'C')
-                {
+                } else if (next == 'C') {
                     res += 90;
                     i++;
-                }
-                else
-                {
+                } else {
                     res += 10;
                 }
-            }
-            else if (cur == 'C')
-            {
-                if (next == 'D')
-                {
+            } else if (cur == 'C') {
+                if (next == 'D') {
                     res += 400;
                     i++;
-                }
-                else if (next == 'M')
-                {
+                } else if (next == 'M') {
                     res += 900;
                     i++;
-                }
-                else
-                {
+                } else {
                     res += 100;
                 }
 
-            }
-            else
-            {
-                if (cur == 'V')
-                {
+            } else {
+                if (cur == 'V') {
                     res += 5;
-                }
-                else if (cur == 'L')
-                {
+                } else if (cur == 'L') {
                     res += 50;
-                }
-                else if (cur == 'D')
-                {
+                } else if (cur == 'D') {
                     res += 500;
-                }
-                else if (cur == 'M')
-                {
+                } else if (cur == 'M') {
                     res += 1000;
                 }
             }
@@ -221,8 +171,7 @@ public class Main : MonoBehaviour
         return res;
     }
 
-    public static int RomanToInt(string s)
-    {
+    public static int RomanToInt(string s) {
 
         Dictionary<char, int> symbolValues = new Dictionary<char, int>(){
             {'I',1},
@@ -236,17 +185,32 @@ public class Main : MonoBehaviour
 
         int res = 0;
         char[] chars = s.ToCharArray();
-        for (int i = 0; i < chars.Length; i++)
-        {
+        for (int i = 0; i < chars.Length; i++) {
             int value = symbolValues[chars[i]];
-            if (i < chars.Length - 1 && value < symbolValues[chars[i + 1]])
-            {
+            if (i < chars.Length - 1 && value < symbolValues[chars[i + 1]]) {
                 res -= value;
-            }
-            else
-            {
+            } else {
                 res += value;
             }
+        }
+        return res;
+    }
+
+    // 公共最长前缀
+    public static string LongestCommonPrefix(string[] strs) {
+        string res = "";
+        string first = strs[0];
+        for (int j = 0; j < first.Length; j++) {
+            for (int i = 1; i < strs.Length; i++) {
+                string cur = strs[i];
+                if (cur.Length - 1 < j) {
+                    return res;
+                }
+                if (first[j] != cur[j]) {
+                    return res;
+                }
+            }
+            res += first[j];
         }
         return res;
     }
