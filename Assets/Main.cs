@@ -5,13 +5,16 @@ using UnityEngine;
 public class Main : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
-        Debug.Log(RomanToInt("IV"));
-        Debug.Log(RomanToInt("IX"));
-        Debug.Log(RomanToInt("LVIII"));
-        Debug.Log(RomanToInt("MCMXCIV"));
-        Debug.Log(RomanToInt_1("MDL"));
+        Debug.Log("罗马数 IV 转整数 is:" + RomanToInt("IV"));
+        Debug.Log("罗马数 IX 转整数 is:" + RomanToInt("IX"));
+        Debug.Log("罗马数 LVIII 转整数 is:" + RomanToInt("LVIII"));
+        Debug.Log("罗马数 MCMXCIV 转整数 is:" + RomanToInt("MCMXCIV"));
+        Debug.Log("罗马数 MDL 转整数 is:" + RomanToInt_1("MDL"));
 
-        Debug.Log(LongestCommonPrefix(new string[] { "ABCDEFG", "ABCDE", "ABCD", "ABC" }));
+        Debug.Log("字符串组{'ABCDEFG', 'ABCDE', 'ABCD', 'ABC' }的最长前缀是：" + LongestCommonPrefix(new string[] { "ABCDEFG", "ABCDE", "ABCD", "ABC" }));
+
+        Debug.Log("回文数 1799999971 res:" + IsPalindrome_1(1799999971));
+        Debug.Log("回文数 1999999991 res:" + IsPalindrome_1(1999999991));
     }
 
     // Update is called once per frame
@@ -43,15 +46,17 @@ public class Main : MonoBehaviour {
         for (int i = 9; i >= 0; i--) {
             byte cur;
             if (tarList.Count == 0) {
-                cur = (byte)(x / Mathf.Pow(10, i));
+                cur = (byte)(x / (int)Mathf.Pow(10, i));
             } else {
                 int curX = x % (int)Mathf.Pow(10, i + 1);
-                cur = (byte)(curX / Mathf.Pow(10, i));
+                cur = (byte)(curX / (int)Mathf.Pow(10, i)); // Mathf.Pow(10,i);是float 类型的，要转（int） 不然会有误差
+                // if (i == 8) {
+                //     Debug.Log(cur + "  " + curX / 100000000);
+                // }
             }
             if (tarList.Count == 0) {
                 if (cur > 0) {
                     tarList.Add(cur);
-
                 }
             } else {
                 tarList.Add(cur);
@@ -67,7 +72,6 @@ public class Main : MonoBehaviour {
         for (int i = 0; i < tarList.Count; i++) {
             res += (int)Mathf.Pow(10, i) * tarList[i];
         }
-        System.Console.WriteLine(res);
         if (res == x) {
             return true;
         } else {
