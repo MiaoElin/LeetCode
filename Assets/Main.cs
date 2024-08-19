@@ -16,12 +16,13 @@ public class Main : MonoBehaviour {
 
         Debug.Log("回文数 1799999971 res:" + IsPalindrome_1(1799999971));
         Debug.Log("回文数 1999999991 res:" + IsPalindrome_1(1999999991));
+        Debug.Log("删除有序数组{[0,0,1,1,1,2,2,3,3,4]}中的重复元素后的个数是：" + RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 }));
 
     }
 
     // Update is called once per frame
     void Update() {
-        
+
     }
 
     #region  两数之和等于目标数
@@ -292,6 +293,56 @@ public class Main : MonoBehaviour {
         } else {
             return true;
         }
+    }
+    #endregion
+
+    #region 删除有序数组中的重复元素
+    public static int RemoveDuplicates_1(int[] nums) {
+        // [0,0,1,1,1,2,2,3,3,4]
+        // [1,1,2]
+        if (nums.Length <= 1) {
+            return nums.Length;
+        }
+        List<int> res = new List<int>();
+        for (int i = 0; i < nums.Length - 1; i++) {
+            var cur = nums[i];
+            if (res.Count == 0 || res.Count > 0 && cur != res[res.Count - 1]) {
+                res.Add(cur);
+            }
+            int next = nums[i + 1];
+            while (next == cur) {
+                i++;
+                if (i == nums.Length - 1) {
+                    break;
+                }
+                Debug.Log(i);
+                next = nums[i + 1];
+            }
+
+            if (cur != next) {
+                res.Add(next);
+            }
+        }
+        for (int i = 0; i < res.Count; i++) {
+            nums[i] = res[i];
+        }
+        return res.Count;
+    }
+
+    public static int RemoveDuplicates(int[] nums) {
+        if (nums.Length <= 1) {
+            return nums.Length;
+        }
+        int slow = 0;
+        int fast = 1;
+        while (fast < nums.Length) {
+            if (nums[slow] != nums[fast]) {
+                slow += 1;
+                nums[slow] = nums[fast];
+            }
+            fast += 1;
+        }
+        return slow + 1;// slow 是下标，数量要+1；
     }
     #endregion
 }
