@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Main : MonoBehaviour {
     // Start is called before the first frame update
@@ -15,15 +16,15 @@ public class Main : MonoBehaviour {
 
         Debug.Log("回文数 1799999971 res:" + IsPalindrome_1(1799999971));
         Debug.Log("回文数 1999999991 res:" + IsPalindrome_1(1999999991));
+
     }
 
     // Update is called once per frame
     void Update() {
-
+        
     }
 
-
-    // 两数之和 等于 目标数
+    #region  两数之和等于目标数
     public static int[] TwoSum(int[] nums, int target) {
         for (int i = 0; i < nums.Length - 1; i++) {
             for (int j = i + 1; j < nums.Length; j++) {
@@ -34,8 +35,9 @@ public class Main : MonoBehaviour {
         }
         return new int[] { -1, -1 };
     }
+    #endregion
 
-    // 回文数
+    #region 回文数
     // - 我的思路
     public static bool IsPalindrome_1(int x) {
         if (x < 0) {
@@ -85,6 +87,8 @@ public class Main : MonoBehaviour {
         }
         // 从x的个位数开始
         int revertedNumber = 0;
+        // 偶 1221         奇 12321
+        // 只需要做左右两边的比较，x是左边剩下的值，revertedNumber是生成的右边的值
         while (x > revertedNumber) {
             revertedNumber = revertedNumber * 10 + x % 10;
             x /= 10;
@@ -93,8 +97,9 @@ public class Main : MonoBehaviour {
         //       x的位数为偶位           x的位数为奇位数
         return x == revertedNumber || x == revertedNumber / 10;
     }
+    #endregion
 
-    // 罗马数字转整数
+    #region 罗马数字转整数
     public static int RomanToInt_1(string s) {
         int res = 0;
         char[] chars = s.ToCharArray();
@@ -199,8 +204,9 @@ public class Main : MonoBehaviour {
         }
         return res;
     }
+    #endregion
 
-    // 公共最长前缀
+    #region 公共最长前缀
     public static string LongestCommonPrefix(string[] strs) {
         string res = "";
         string first = strs[0];
@@ -218,4 +224,76 @@ public class Main : MonoBehaviour {
         }
         return res;
     }
+    #endregion
+
+    #region 三数之和 
+    public static IList<IList<int>> ThreeSum(int[] nums) {
+        List<IList<int>> res = new List<IList<int>>();
+        if (nums.Length < 3) {
+            return res;
+        }
+        Array.Sort(nums);
+        List<Vector3> vs = new List<Vector3>();
+        for (int i = 0; i < nums.Length - 2; i++) {
+            int cur1 = nums[i];
+            if (cur1 > 0) {
+                break;
+            }
+            for (int j = i + 1; j < nums.Length; j++) {
+                int cur2 = nums[j];
+                for (int k = j + 1; k < nums.Length; k++) {
+                    int cur3 = nums[k];
+                    if (cur1 + cur2 + cur3 == 0) {
+                        List<int> cur = new List<int>(3){
+                            cur1,cur2,cur3
+                        };
+                        Vector3 v = new Vector3(cur[0], cur[1], cur[2]);
+                        if (!vs.Contains(v)) {
+                            vs.Add(v);
+                            res.Add(cur);
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+    #endregion
+
+    #region 有效的括号
+    public static bool IsValid(string s) {
+        // 新建一个堆栈
+        Stack<char> stk = new Stack<char>();
+        for (int i = 0; i < s.Length; i++) {
+            var cur = s[i];
+            // 如果是半边左边就推上去
+            if (cur == '(' || cur == '{' || cur == '[') {
+                stk.Push(cur);
+            } else {
+                // 不是第一个，且上一个是对应的 '('，就pop这个'(',抵消了
+                if (stk.Count == 0) {
+                    stk.Push(cur);
+                    break;
+                }
+                if (cur == ')' && stk.Peek() == '(') {
+                    stk.Pop();
+                } else if (cur == ']' && stk.Peek() == '[') {
+                    stk.Pop();
+                } else if (cur == '}' && stk.Peek() == '{') {
+                    stk.Pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        if (stk.Count > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    #endregion
 }
+
+
