@@ -17,6 +17,7 @@ public class Main : MonoBehaviour {
         Debug.Log("回文数 1799999971 res:" + IsPalindrome_1(1799999971));
         Debug.Log("回文数 1999999991 res:" + IsPalindrome_1(1999999991));
         Debug.Log("删除有序数组{[0,0,1,1,1,2,2,3,3,4]}中的重复元素后的个数是：" + RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 }));
+        Debug.Log("mississippi/sippia 第一个匹配项的下标是：" + StrStr("mississippi", "sippia"));
     }
 
     // Update is called once per frame
@@ -373,6 +374,56 @@ public class Main : MonoBehaviour {
             }
         }
         return k;
+    }
+    #endregion
+
+    #region 找出字符串中第一个匹配项的下标
+    // 我这个性能更好，内存消耗差不多
+    public static int StrStr_1(string haystack, string needle) {
+        if (haystack.Length < needle.Length) {
+            return -1;
+        }
+        for (int i = 0; i < haystack.Length; i++) {
+            char cur = haystack[i];
+            if (cur == needle[0]) {
+                if (i + needle.Length > haystack.Length) {
+                    return -1;
+                }
+                bool istrue = true;
+                for (int j = 1; j < needle.Length; j++) {
+                    cur = haystack[i + j];
+                    var need = needle[j];
+                    if (cur != need) {
+                        istrue = false;
+                        continue;
+                    }
+                }
+                if (istrue) {
+                    return i;
+                }
+            } else {
+                continue;
+            }
+        }
+
+        return -1;
+
+    }
+
+    public static int StrStr(string haystack, string needle) {
+        int j = 0;
+        for (int i = 0; i < haystack.Length; i++) {
+            if (haystack[i] == needle[j]) {
+                j++;
+                if (j == needle.Length)
+                    return i - j + 1;
+
+            } else {
+                i -= j;
+                j = 0;
+            }
+        }
+        return -1;
     }
     #endregion
 }
