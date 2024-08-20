@@ -20,6 +20,7 @@ public class Main : MonoBehaviour {
         Debug.Log("mississippi/sippia 第一个匹配项的下标是：" + StrStr("mississippi", "sippia"));
 
         Debug.Log(SearchInsert(new int[] { 1, 3, 5, 6 }, 2));
+        Debug.Log(FindMedianSortedArrays_1(new int[] { 1, 1 }, new int[] { 1, 2 }));
     }
 
     // Update is called once per frame
@@ -474,6 +475,86 @@ public class Main : MonoBehaviour {
         }
         index = FindIndex(nums, target, start, end);
         return index;
+    }
+    #endregion
+
+    #region 寻找两个正序数组的中位数
+    // 合并的数组不能重复元素
+    public static double FindMedianSortedArrays(int[] nums1, int[] nums2) {
+        List<int> res = new List<int>();
+        int j = 0;
+        for (int i = 0; i < nums1.Length; i++) {
+            var cur1 = nums1[i];
+            if (j >= nums2.Length) {
+                if (!res.Contains(cur1)) {
+                    res.Add(cur1);
+                }
+                continue;
+            }
+            if (cur1 > nums2[j]) {
+                if (!res.Contains(nums2[j])) {
+                    res.Add(nums2[j]);
+                }
+                i--;
+                j++;
+            } else if (cur1 == nums2[j]) {
+                if (!res.Contains(cur1)) {
+                    res.Add(cur1);
+                }
+                j++;
+            } else if (cur1 < nums2[j]) {
+                if (!res.Contains(cur1)) {
+                    res.Add(cur1);
+                }
+            }
+        }
+
+        if (j < nums2.Length) {
+            for (int i = j; i < nums2.Length; i++) {
+                if (!res.Contains(nums2[i])) {
+                    res.Add(nums2[i]);
+                }
+            }
+        }
+        string s = "";
+        foreach (var re in res) {
+            s += re.ToString() + ",";
+        }
+        Debug.Log(s);
+
+        int index;
+        if (res.Count % 2 == 1) {
+            index = (int)res.Count / 2;
+            return res[index];
+        } else {
+            index = res.Count / 2;
+            Debug.Log(res[index - 1] + " " + res[index]);
+            return (double)(res[index - 1] + res[index]) / 2;
+        }
+
+    }
+   
+    // 合并的数组重复元素
+    public static double FindMedianSortedArrays_1(int[] nums1, int[] nums2) {
+        int count = nums1.Length + nums2.Length;
+        int[] res = new int[count];
+        for (int i = 0; i < count; i++) {
+            if (i < nums1.Length && i >= 0) {
+                res[i] = nums1[i];
+            } else {
+                res[i] = nums2[i - nums1.Length];
+            }
+        }
+        Array.Sort(res);
+
+        int index;
+        if (res.Length % 2 == 1) {
+            index = (int)res.Length / 2;
+            return res[index];
+        } else {
+            index = res.Length / 2;
+            return (double)(res[index - 1] + res[index]) / 2;
+        }
     }
     #endregion
 }
