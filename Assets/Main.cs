@@ -17,7 +17,6 @@ public class Main : MonoBehaviour {
         Debug.Log("回文数 1799999971 res:" + IsPalindrome_1(1799999971));
         Debug.Log("回文数 1999999991 res:" + IsPalindrome_1(1999999991));
         Debug.Log("删除有序数组{[0,0,1,1,1,2,2,3,3,4]}中的重复元素后的个数是：" + RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 }));
-
     }
 
     // Update is called once per frame
@@ -345,6 +344,36 @@ public class Main : MonoBehaviour {
         return slow + 1;// slow 是下标，数量要+1；
     }
     #endregion
-}
 
+    #region 移除元素
+    public static int RemoveElement_1(int[] nums, int val) {
+        Stack<int> stk = new Stack<int>();
+        for (int i = 0; i < nums.Length; i++) {
+            var cur = nums[i];
+            if (cur == val) {
+                continue;
+            } else {
+                stk.Push(cur);
+            }
+        }
+        int count = 0;
+        foreach (var s in stk) {
+            nums[count] = s;
+            count++;
+        }
+        return count;
+    }
+
+    public static int RemoveElement(int[] nums, int val) {
+        int k = 0;
+        for (int i = 0; i < nums.Length; i++) {
+            if (nums[i] != val) {
+                nums[k] = nums[i];
+                k++;
+            }
+        }
+        return k;
+    }
+    #endregion
+}
 
