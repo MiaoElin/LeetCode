@@ -18,6 +18,8 @@ public class Main : MonoBehaviour {
         Debug.Log("回文数 1999999991 res:" + IsPalindrome_1(1999999991));
         Debug.Log("删除有序数组{[0,0,1,1,1,2,2,3,3,4]}中的重复元素后的个数是：" + RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 }));
         Debug.Log("mississippi/sippia 第一个匹配项的下标是：" + StrStr("mississippi", "sippia"));
+
+        Debug.Log(SearchInsert(new int[] { 1, 3, 5, 6 }, 2));
     }
 
     // Update is called once per frame
@@ -424,6 +426,54 @@ public class Main : MonoBehaviour {
             }
         }
         return -1;
+    }
+    #endregion
+
+    #region 搜索插入位置
+    public static int SearchInsert_1(int[] nums, int target) {
+        for (int i = 0; i < nums.Length; i++) {
+            var cur = nums[i];
+            if (cur < target) {
+                continue;
+            } else if (cur > target) {
+                return i;
+            } else if (cur == target) {
+                return i;
+            }
+        }
+        return nums.Length;
+    }
+    // 二分法
+    public static int SearchInsert(int[] nums, int target) {
+        if (target <= nums[0]) {
+            return 0;
+        } else if (target > nums[nums.Length - 1]) {
+            return nums.Length;
+        }
+
+        int start = 0;
+        int end = nums.Length - 1;
+        return FindIndex(nums, target, start, end);
+    }
+
+    public static int FindIndex(int[] nums, int target, int start, int end) {
+        int index;
+        if (start > end) {
+            index = start;
+            return index;
+        }
+        int middle = (int)((start + end) / 2);
+        int midNum = nums[middle];
+        if (midNum == target) {
+            index = middle;
+            return index;
+        } else if (midNum < target) {
+            start = middle + 1;
+        } else {
+            end = middle - 1;
+        }
+        index = FindIndex(nums, target, start, end);
+        return index;
     }
     #endregion
 }
