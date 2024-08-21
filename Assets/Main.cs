@@ -21,6 +21,9 @@ public class Main : MonoBehaviour {
 
         Debug.Log(SearchInsert(new int[] { 1, 3, 5, 6 }, 2));
         Debug.Log(FindMedianSortedArrays_1(new int[] { 1, 1 }, new int[] { 1, 2 }));
+        List<ListNode> l1 = NumberToListNode(new int[] { 9, 9, 9, 9, 9, 9, 9 });
+        List<ListNode> l2 = NumberToListNode(new int[] { 9, 9, 9, 9 });
+        Debug.Log(AddTwoNumbers(l1[0], l2[0]).val);
     }
 
     // Update is called once per frame
@@ -533,7 +536,7 @@ public class Main : MonoBehaviour {
         }
 
     }
-   
+
     // 合并的数组重复元素
     public static double FindMedianSortedArrays_1(int[] nums1, int[] nums2) {
         int count = nums1.Length + nums2.Length;
@@ -557,5 +560,112 @@ public class Main : MonoBehaviour {
         }
     }
     #endregion
+
+    #region 两数相加
+    // /**
+    public class ListNode {
+        public int val;
+        public ListNode next;
+        public ListNode(int val = 0, ListNode next = null) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+    //  */
+
+    public static List<ListNode> NumberToListNode(int[] nums) {
+        List<ListNode> all = new List<ListNode>();
+        foreach (var num in nums) {
+            ListNode node = new ListNode(num);
+            all.Add(node);
+        }
+        for (int i = 0; i < all.Count - 1; i++) {
+            all[i].next = all[i + 1];
+        }
+        return all;
+    }
+
+    // 我这个有问题，数据会超出int范围 flaot a= mathf.Pow(10,count);返回的是float 类型的，当count 加大，很容易超出范围
+    public static ListNode AddTwoNumbers_1(ListNode l1, ListNode l2) {
+        uint value = 0;
+        uint A = (uint)l1.val;
+        uint B = (uint)l2.val;
+        int Acount = 1;
+        int Bcount = 1;
+        while (l1.next != null) {
+            A += (uint)l1.next.val * (uint)MathF.Pow(10, Acount);
+            l1 = l1.next;
+            Acount++;
+        }
+        while (l2.next != null) {
+            B += (uint)l2.next.val * (uint)MathF.Pow(10, Bcount);
+            Debug.Log(l2.next.val + " B IS" + B);
+            l2 = l2.next;
+            Bcount++;
+        }
+        value = A + B;
+        Debug.Log(value + "A:" + A + "  B:" + B);
+        int val = 0;
+        List<ListNode> temp = new List<ListNode>();
+        while (value >= 1) {
+            val = (int)value % 10;
+            ListNode newNode = new ListNode(val);
+            temp.Add(newNode);
+            value /= 10;
+        }
+        for (int i = 0; i < temp.Count - 1; i++) {
+            var node = temp[i];
+            node.next = temp[i + 1];
+            Debug.Log(node.val);
+        }
+        // Debug.Log(temp[temp.Count - 1].val);
+        if (temp.Count == 0) {
+            return new ListNode(0);
+        } else {
+            return temp[0];
+        }
+    }
+    
+    // 转变思想： 从整体 转为一位一位，每位数字的范围都是0-9；
+        // 两个数相加，最多是9+9=18, 这时候进了1位，要存到高一位十进制单位里，用一个int carry 来存储，因为限定了位数是<=100位，所以carry最多位为99（不过超了也没事，carry会一直求余 /10 直到为0);
+    public static ListNode AddTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode head = null;
+        ListNode cur = null;
+        int sum = 0;
+        int carry = 0;
+        List<ListNode> all = new List<ListNode>();
+        while (l1 != null || l2 != null || carry != 0) {
+            int A = l1 != null ? l1.val : 0;
+            int B = l2 != null ? l2.val : 0;
+            sum = A + B + carry;
+            cur = new ListNode(sum % 10);
+            all.Add(cur);
+            if (head == null) {
+                head = cur;
+            }
+            carry = sum / 10;
+            cur = cur.next;
+            if (l1 != null && l1.next != null) {
+                l1 = l1.next;
+            } else {
+                l1 = null;
+            }
+            if (l2 != null && l2.next != null) {
+                l2 = l2.next;
+            } else {
+                l2 = null;
+            }
+        }
+        Debug.Log(all.Count);
+        for (int i = 0; i < all.Count - 1; i++) {
+            all[i].next = all[i + 1];
+        }
+
+        if (head == null) {
+            return new ListNode(0);
+        }
+        return head;
+    }
 }
+#endregion
 
