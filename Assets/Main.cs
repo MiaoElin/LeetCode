@@ -24,6 +24,8 @@ public class Main : MonoBehaviour {
         List<ListNode> l1 = NumberToListNode(new int[] { 9, 9, 9, 9, 9, 9, 9 });
         List<ListNode> l2 = NumberToListNode(new int[] { 9, 9, 9, 9 });
         Debug.Log(AddTwoNumbers(l1[0], l2[0]).val);
+
+        Debug.Log(LengthOfLongestSubstring("abcabcbb"));
     }
 
     // Update is called once per frame
@@ -625,9 +627,9 @@ public class Main : MonoBehaviour {
             return temp[0];
         }
     }
-    
+
     // 转变思想： 从整体 转为一位一位，每位数字的范围都是0-9；
-        // 两个数相加，最多是9+9=18, 这时候进了1位，要存到高一位十进制单位里，用一个int carry 来存储，因为限定了位数是<=100位，所以carry最多位为99（不过超了也没事，carry会一直求余 /10 直到为0);
+    // 两个数相加，最多是9+9=18, 这时候进了1位，要存到高一位十进制单位里，用一个int carry 来存储，因为限定了位数是<=100位，所以carry最多位为99（不过超了也没事，carry会一直求余 /10 直到为0);
     public static ListNode AddTwoNumbers(ListNode l1, ListNode l2) {
         ListNode head = null;
         ListNode cur = null;
@@ -656,7 +658,6 @@ public class Main : MonoBehaviour {
                 l2 = null;
             }
         }
-        Debug.Log(all.Count);
         for (int i = 0; i < all.Count - 1; i++) {
             all[i].next = all[i + 1];
         }
@@ -666,6 +667,89 @@ public class Main : MonoBehaviour {
         }
         return head;
     }
-}
-#endregion
+    #endregion
 
+    #region 无重复字符的最长子串
+    // 我这个速度性能都不够
+    public static int LengthOfLongestSubstring_1(string s) {
+        List<char> res = new List<char>();
+        int count = 0;
+
+        for (int i = 0; i < s.Length; i++) {
+            var cur = s[i];
+            if (res.Contains(cur)) {
+                if (res.Count >= count) {
+                    count = res.Count;
+                    // Debug.Log(res);
+                }
+                if (res[res.Count - 1] == cur) {
+                    if (count > s.Length - 1 - i || res.Count > s.Length - 1 - i) {
+                        break;
+                    }
+                    res.Clear();
+                    res.Add(cur);
+                    continue;
+                } else {
+                    bool isfind = false;
+                    List<char> newRes = new List<char>();
+                    for (int j = 0; j < res.Count; j++) {
+                        if (!isfind && res[j] == cur) {
+                            if (count > s.Length - 1 - j || res.Count > s.Length - 1 - j) {
+                                break;
+                            }
+                            isfind = true;
+                            continue;
+                        }
+                        if (isfind) {
+                            newRes.Add(res[j]);
+                        }
+                    }
+                    res = newRes;
+                }
+            }
+            res.Add(cur);
+        }
+
+        // Debug.Log(res);
+
+        if (count < res.Count) {
+            // Debug.Log(res);
+            return res.Count;
+        }
+        return count;
+    }
+
+    public static int LengthOfLongestSubstring(string s) {
+        // 字符0或者1个的，不会重复，直接返回数量
+        if (s.Length <= 1) {
+            return s.Length;
+        }
+        // 
+        HashSet<char> res = new HashSet<char>();
+        int left = 0;
+        int right = 1;
+        
+        // 加入第一个
+        res.Add(s[0]);
+        int count = 0;
+        
+        while (right < s.Length) {
+            // res里没有这个元素
+            if (!res.Contains(s[right])) {
+                res.Add(s[right]);
+                // 这里比较是因为res是一直更新的，count在变，我们要的是曾经最大的那个
+                count = Mathf.Max(count, res.Count);
+                // 添加完右移
+                right++;
+            } else {
+                // 已经有这个元素了,从左边开始移除,直到没s[right]了为止
+                res.Remove(s[left]);
+                left++;
+            }
+        }
+        return count;
+    }
+
+    #endregion
+
+}
