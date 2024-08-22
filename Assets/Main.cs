@@ -26,6 +26,8 @@ public class Main : MonoBehaviour {
         Debug.Log(AddTwoNumbers(l1[0], l2[0]).val);
 
         Debug.Log(LengthOfLongestSubstring("abcabcbb"));
+
+        Debug.Log(LengthOfLastWord("   fly me   to   the moon  "));
     }
 
     // Update is called once per frame
@@ -728,11 +730,11 @@ public class Main : MonoBehaviour {
         HashSet<char> res = new HashSet<char>();
         int left = 0;
         int right = 1;
-        
+
         // 加入第一个
         res.Add(s[0]);
         int count = 0;
-        
+
         while (right < s.Length) {
             // res里没有这个元素
             if (!res.Contains(s[right])) {
@@ -750,6 +752,66 @@ public class Main : MonoBehaviour {
         return count;
     }
 
+    #endregion
+
+    #region 最后一个单词的长度
+    public static int LengthOfLastWord_1(string s) {
+        int length = 0;
+        for (int i = 0; i < s.Length; i++) {
+            var cur = s[i];
+            if (cur == ' ') {
+                if (i + 1 < s.Length && s[i + 1] != ' ') {
+                    length = 0;
+                } else {
+                    continue;
+                }
+            } else {
+                length++;
+            }
+        }
+        return length;
+    }
+
+    public static int LengthOfLastWord_2(string s) {
+        int length = 0;
+        bool isFind = false;
+        if (s[s.Length - 1] != ' ') {
+            isFind = true;
+        }
+        for (int i = s.Length - 1; i >= 0; i--) {
+            var cur = s[i];
+            if (cur == ' ') {
+                if (isFind) {
+                    break;
+                }
+                if (s[i - 1] == ' ') {
+                    continue;
+                } else {
+                    isFind = true;
+                    continue;
+                }
+            } else {
+                length++;
+            }
+        }
+        return length;
+    }
+    
+    // 最简洁
+    public static int LengthOfLastWord(string s) {
+        int length = 0;
+        int index = s.Length - 1;
+        while (index >= 0 && s[index] == ' ') {
+            index--;
+        }
+
+        while (index >= 0 && s[index] != ' ') {
+            length++;
+            index--;
+        }
+
+        return length;
+    }
     #endregion
 
 }
