@@ -28,8 +28,17 @@ public class Main : MonoBehaviour {
         Debug.Log(LengthOfLongestSubstring("abcabcbb"));
 
         Debug.Log(LengthOfLastWord("   fly me   to   the moon  "));
+        Debug.Log(IsValidSudoku(new char[][]{
+        new char[] {'5','3','.','.','7','.','.','.','.' },
+        new char[] {'6','.','.','1','9','5','.','.','.' },
+        new char[] {'.','9','8','.','.','.','.','6','.'},
+        new char[] {'8','.','.','.','6','.','.','.','3'},
+        new char[] {'4','.','.','8','.','3','.','.','1'},
+        new char[] {'7','.','.','.','2','.','.','.','6'},
+        new char[] {'.','6','.','.','.','.','2','8','.' },
+        new char[] {'.','.','.','4','1','9','.','.','5'},
+        new char[] { '.','.','.','.','8','.','.','7','9' }}));
     }
-
     // Update is called once per frame
     void Update() {
 
@@ -796,7 +805,7 @@ public class Main : MonoBehaviour {
         }
         return length;
     }
-    
+
     // 最简洁
     public static int LengthOfLastWord(string s) {
         int length = 0;
@@ -813,5 +822,136 @@ public class Main : MonoBehaviour {
         return length;
     }
     #endregion
+
+    #region 有效的数独
+    public static bool IsValidSudoku_1(char[][] board) {
+        HashSet<char> board1 = new HashSet<char>();
+        HashSet<char> board2 = new HashSet<char>();
+        HashSet<char> board3 = new HashSet<char>();
+        HashSet<char> board4 = new HashSet<char>();
+        HashSet<char> board5 = new HashSet<char>();
+        HashSet<char> board6 = new HashSet<char>();
+        HashSet<char> board7 = new HashSet<char>();
+        HashSet<char> board8 = new HashSet<char>();
+        HashSet<char> board9 = new HashSet<char>();
+
+        HashSet<char> colum = new HashSet<char>();
+        int columCount = 0;
+        while (columCount < 9) {
+            for (int y = 0; y < board.Length; y++) {
+                var cur = board[y];
+                if (cur[columCount] == '.') {
+                    continue;
+                }
+                if (colum.Contains(cur[columCount])) {
+                    Debug.Log(columCount);
+                    return false;
+                } else {
+                    colum.Add(cur[columCount]);
+                }
+            }
+            columCount++;
+            colum.Clear();
+        }
+
+
+        for (int i = 0; i < board.Length; i++) {
+            char[] cur = board[i];
+            HashSet<char> curRow = new HashSet<char>();
+            for (int j = 0; j < cur.Length; j++) {
+                var ch = cur[j];
+                if (ch == '.') {
+                    continue;
+                }
+                if (curRow.Contains(ch)) {
+                    return false;
+                } else {
+                    curRow.Add(ch);
+                }
+                if (i < 3 && i >= 0 && j >= 0 && j < 3) {
+                    if (board1.Contains(ch)) {
+                        return false;
+                    } else {
+                        board1.Add(ch);
+                    }
+                } else if (i < 3 && i >= 0 && j >= 3 && j < 6) {
+                    if (board2.Contains(ch)) {
+                        return false;
+                    } else {
+                        board2.Add(ch);
+                    }
+                } else if (i < 3 && i >= 0 && j >= 6 && j < 9) {
+                    if (board3.Contains(ch)) {
+                        return false;
+                    } else {
+                        board3.Add(ch);
+                    }
+                } else if (i < 6 && i >= 3 && j >= 0 && j < 3) {
+                    if (board4.Contains(ch)) {
+                        return false;
+                    } else {
+                        board4.Add(ch);
+                    }
+                } else if (i < 6 && i >= 3 && j >= 3 && j < 6) {
+                    if (board5.Contains(ch)) {
+                        return false;
+                    } else {
+                        board5.Add(ch);
+                    }
+                } else if (i < 6 && i >= 3 && j >= 6 && j < 9) {
+                    if (board6.Contains(ch)) {
+                        return false;
+                    } else {
+                        board6.Add(ch);
+                    }
+                } else if (i < 9 && i >= 6 && j >= 0 && j < 3) {
+                    if (board7.Contains(ch)) {
+                        return false;
+                    } else {
+                        board7.Add(ch);
+                    }
+                } else if (i < 9 && i >= 6 && j >= 3 && j < 6) {
+                    if (board8.Contains(ch)) {
+                        return false;
+                    } else {
+                        board8.Add(ch);
+                    }
+                } else if (i < 9 && i >= 6 && j >= 6 && j < 9) {
+                    if (board9.Contains(ch)) {
+                        return false;
+                    } else {
+                        board9.Add(ch);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    // 二维数组的应用(矩阵)
+    public static bool IsValidSudoku(char[][] board) {
+        int[,] row = new int[9, 9];
+        int[,] colum = new int[9, 9];
+        int[,,] subBoxex = new int[3, 3, 9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                var cur = board[i][j];
+                if (cur == '.') {
+                    continue;
+                }
+                int index = cur - '0' - 1;
+                row[i, index]++;
+                colum[j, index]++;
+                subBoxex[i / 3, j / 3, index]++;
+                if (row[i, index] > 1 || colum[j, index] > 1 || subBoxex[i / 3, j / 3, index] > 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    #endregion
+
 
 }
