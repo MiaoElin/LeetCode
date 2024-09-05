@@ -953,5 +953,44 @@ public class Main : MonoBehaviour {
 
     #endregion
 
+    #region 加一
+    public static int[] PlusOne(int[] digits) {
+        if (digits[0] == 0) {
+            return new int[] { 1 };
+        }
+
+        bool needAdd = false;
+
+        for (int i = digits.Length - 1; i >= 0; i--) {
+            var cur = digits[i];
+            if (cur == 9) {
+                if (i == 0) {
+                    needAdd = true;
+                }
+                digits[i] = 0;
+            } else {
+                digits[i]++;
+                break;
+            }
+        }
+
+        if (needAdd) {
+            int[] res = new int[digits.Length + 1];
+            res[0] = 1;
+            for (int i = 1; i < res.Length; i++) {
+                res[i] = digits[i - 1];
+            }
+            return res;
+        }
+
+        return digits;
+
+    }
+    #endregion
+
+
+
+
+
 
 }
