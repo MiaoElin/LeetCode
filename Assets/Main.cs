@@ -1038,7 +1038,22 @@ public class Main : MonoBehaviour {
     }
     #endregion
 
-
+    #region 删除排序链表中重复的重复元素
+    public static ListNode DeleteDuplicates(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        var temp = head;
+        while (temp.next != null) {
+            if (temp.val == temp.next.val) {
+                temp.next = temp.next.next;
+            } else {
+                temp = temp.next;
+            }
+        }
+        return head;
+    }
+    #endregion
 
 
 
