@@ -43,6 +43,64 @@ public class Main : MonoBehaviour {
     void Update() {
 
     }
+    #region 乘最多水的容器
+    public static int MaxArea_1(int[] height) {
+        if (height.Length == 1) {
+            return 0;
+        }
+        if (height.Length == 2) {
+            return Math.Min(height[0], height[1]);
+        }
+        int max = 0;
+        int smallIndex = 0;
+        int bigIndex = 0;
+        if (height[0] >= height[height.Length - 1]) {
+            smallIndex = height.Length - 1;
+        } else {
+            bigIndex = height.Length - 1;
+        }
+
+        while (smallIndex != bigIndex) {
+            int cur = height[smallIndex] * Math.Abs(bigIndex - smallIndex);
+            if (cur >= max) {
+                max = cur;
+            }
+            if (smallIndex > bigIndex) {
+                smallIndex--;
+            } else {
+                smallIndex++;
+            }
+            if (smallIndex == bigIndex) {
+                break;
+            }
+            if (height[smallIndex] >= height[bigIndex]) {
+                int temp = smallIndex;
+                smallIndex = bigIndex;
+                bigIndex = temp;
+            }
+        }
+
+        return max;
+    }
+
+    public static int MaxArea(int[] height) {
+        int left = 0;
+        int right = height.Length - 1;
+        int max = 0;
+        while (left < right) {
+            int curArea = (right - left) * (Math.Min(height[right], height[left]));
+            max = Math.Max(curArea, max);
+            if (height[left] >= height[right]) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+
+        return max;
+    }
+
+    #endregion
 
     #region  两数之和等于目标数
     public static int[] TwoSum(int[] nums, int target) {
@@ -72,9 +130,9 @@ public class Main : MonoBehaviour {
             } else {
                 int curX = x % (int)Mathf.Pow(10, i + 1);
                 cur = (byte)(curX / (int)Mathf.Pow(10, i)); // Mathf.Pow(10,i);是float 类型的，要转（int） 不然会有误差
-                // if (i == 8) {
-                //     Debug.Log(cur + "  " + curX / 100000000);
-                // }
+                                                            // if (i == 8) {
+                                                            //     Debug.Log(cur + "  " + curX / 100000000);
+                                                            // }
             }
             if (tarList.Count == 0) {
                 if (cur > 0) {
@@ -1054,7 +1112,5 @@ public class Main : MonoBehaviour {
         return head;
     }
     #endregion
-
-
 
 }
