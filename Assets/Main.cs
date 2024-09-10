@@ -44,6 +44,24 @@ public class Main : MonoBehaviour {
     void Update() {
 
     }
+
+    #region 存在重复元素
+    public static bool ContainsDuplicate(int[] nums) {
+        bool has = false;
+        HashSet<int> res = new HashSet<int>();
+        for (int i = 0; i < nums.Length; i++) {
+            var cur = nums[i];
+            if (!res.Contains(cur)) {
+                res.Add(cur);
+            } else {
+                has = true;
+                return has;
+            }
+        }
+        return has;
+    }
+    #endregion
+
     #region 乘最多水的容器
     public static int MaxArea_1(int[] height) {
         if (height.Length == 1) {
@@ -389,7 +407,7 @@ public class Main : MonoBehaviour {
             if (i > 0 && cur == nums[i - 1]) {
                 continue;
             }
-            
+
             left = i + 1;
             right = nums.Length - 1;
 
