@@ -45,11 +45,33 @@ public class Main : MonoBehaviour {
 
         Convert("S", 1);
 
+        IsPalindrome("0p");
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 验证回文串
+    public static bool IsPalindrome(string s) {
+        StringBuilder res = new StringBuilder();
+        foreach (var ch in s) {
+            int cur = (int)ch;
+            if (cur >= 65 && cur <= 90||cur>=48&&cur<=57) {
+                res.Append(ch);
+            }
+            if (cur >= 97 && cur <= 122) {
+                cur -= 32;
+                char big = (char)cur;
+                res.Append(big);
+            }
+        }
+        StringBuilder newRes = new StringBuilder();
+        for (int i = res.Length - 1; i >= 0; i--) {
+            newRes.Append(res[i]);
+        }
+        return res.ToString() == newRes.ToString() ? true : false;
+    }
+    #endregion
 
     #region Z字形变换
     public static string Convert(string s, int numRows) {
