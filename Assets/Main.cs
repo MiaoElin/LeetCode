@@ -46,17 +46,134 @@ public class Main : MonoBehaviour {
         Convert("S", 1);
 
         IsPalindrome("0p");
+
+        IntToRoman(3749);
+
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 整数转罗马
+    // 内存更省
+    public static string IntToRoman(int num) {
+        int index = 0;
+        StringBuilder res = new StringBuilder();
+        while (num > 0) {
+            int cur = num % 10;
+            index++;
+            num /= 10;
+            if (index == 1) {
+                if (cur < 4) {
+                    for (int i = 0; i < cur; i++) {
+                        res.Append("I");
+                    }
+                } else if (cur == 4) {
+                    res.Append("VI");
+                } else if (cur == 9) {
+                    res.Append("XI");
+                } else {
+                    for (int i = 0; i < cur - 5; i++) {
+                        res.Append("I");
+                    }
+                    res.Append("V");
+                }
+            } else if (index == 2) {
+                if (cur < 4) {
+                    for (int i = 0; i < cur - 1; i++) {
+                        res.Append("X");
+                    }
+                } else if (cur == 4) {
+                    res.Append("LX");
+                } else if (cur == 9) {
+                    res.Append("CX");
+                } else {
+                    for (int i = 0; i < cur - 5; i++) {
+                        res.Append("X");
+                    }
+                    res.Append("L");
+                }
+            } else if (index == 3) {
+                if (cur < 4) {
+                    for (int i = 0; i < cur - 1; i++) {
+                        res.Append("C");
+                    }
+                } else if (cur == 4) {
+                    res.Append("DC");
+                } else if (cur == 9) {
+                    res.Append("MC");
+                } else {
+                    for (int i = 0; i < cur - 5; i++) {
+                        res.Append("C");
+                    }
+                    res.Append("D");
+                }
+            } else if (index == 4) {
+                for (int i = 0; i < cur; i++) {
+                    res.Append("M");
+                }
+            }
+        }
+
+        StringBuilder re = new StringBuilder();
+        for (int i = res.Length - 1; i >= 0; i--) {
+            re.Append(res[i]);
+        }
+        return re.ToString();
+    }
+
+    public static string IntToRoman_1(int num) {
+
+        // Tuple<int, string>[] values = {
+        //     new Tuple<int, string>(1000, "M")
+        // };
+        Tuple<int, string>[] values = new Tuple<int, string>[]{
+            new Tuple<int, string>(1000, "M"),
+            new Tuple<int, string>(900,"CM"),
+            new Tuple<int, string>(500,"D"),
+            new Tuple<int, string>(400,"CD"),
+            new Tuple<int, string>(100,"C"),
+            new Tuple<int, string>(90,"XC"),
+            new Tuple<int, string>(50, "L"),
+            new Tuple<int, string>(40, "XL"),
+            new Tuple<int, string>(10, "X"),
+            new Tuple<int, string>(9, "IX"),
+            new Tuple<int, string>(5, "V"),
+            new Tuple<int, string>(4, "IV"),
+            new Tuple<int, string>(1, "I")
+        };
+
+        StringBuilder res = new StringBuilder();
+        foreach (var tupple in values) {
+            int value = tupple.Item1;
+            string symbol = tupple.Item2;
+            while (num >= value) {
+                num -= value;
+                res.Append(symbol);
+            }
+            if (num == 0) {
+                break;
+            }
+        }
+        return res.ToString();
+    }
+
+    #endregion
+
+    #region 整数反转
+    public static int Reverse(int x) {
+        int res = 0;
+
+        return res;
+    }
+    #endregion
+
     #region 验证回文串
     public static bool IsPalindrome(string s) {
         StringBuilder res = new StringBuilder();
         foreach (var ch in s) {
             int cur = (int)ch;
-            if (cur >= 65 && cur <= 90||cur>=48&&cur<=57) {
+            if (cur >= 65 && cur <= 90 || cur >= 48 && cur <= 57) {
                 res.Append(ch);
             }
             if (cur >= 97 && cur <= 122) {
