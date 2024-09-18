@@ -48,12 +48,69 @@ public class Main : MonoBehaviour {
         IsPalindrome("0p");
 
         IntToRoman(3749);
+        FindTheDifference_1("ymbgaraibkfmvocpizdydugvalagaivdbfsfbepeyccqfepzvtpyxtbadkhmwmoswrcxnargtlswqemafandgkmydtimuzvjwxvlfwlhvkrgcsithaqlcvrihrwqkpjdhgfgreqoxzfvhjzojhghfwbvpfzectwwhexthbsndovxejsntmjihchaotbgcysfdaojkjldprwyrnischrgmtvjcorypvopfmegizfkvudubnejzfqffvgdoxohuinkyygbdzmshvyqyhsozwvlhevfepdvafgkqpkmcsikfyxczcovrmwqxxbnhfzcjjcpgzjjfateajnnvlbwhyppdleahgaypxidkpwmfqwqyofwdqgxhjaxvyrzupfwesmxbjszolgwqvfiozofncbohduqgiswuiyddmwlwubetyaummenkdfptjczxemryuotrrymrfdxtrebpbjtpnuhsbnovhectpjhfhahbqrfbyxggobsweefcwxpqsspyssrmdhuelkkvyjxswjwofngpwfxvknkjviiavorwyfzlnktmfwxkvwkrwdcxjfzikdyswsuxegmhtnxjraqrdchaauazfhtklxsksbhwgjphgbasfnlwqwukprgvihntsyymdrfovaszjywuqygpvjtvlsvvqbvzsmgweiayhlubnbsitvfxawhfmfiatxvqrcwjshvovxknnxnyyfexqycrlyksderlqarqhkxyaqwlwoqcribumrqjtelhwdvaiysgjlvksrfvjlcaiwrirtkkxbwgicyhvakxgdjwnwmubkiazdjkfmotglclqndqjxethoutvjchjbkoasnnfbgrnycucfpeovruguzumgmgddqwjgdvaujhyqsqtoexmnfuluaqbxoofvotvfoiexbnprrxptchmlctzgqtkivsilwgwgvpidpvasurraqfkcmxhdapjrlrnkbklwkrvoaziznlpor",
+         "qhxepbshlrhoecdaodgpousbzfcqjxulatciapuftffahhlmxbufgjuxstfjvljybfxnenlacmjqoymvamphpxnolwijwcecgwbcjhgdybfffwoygikvoecdggplfohemfypxfsvdrseyhmvkoovxhdvoavsqqbrsqrkqhbtmgwaurgisloqjixfwfvwtszcxwktkwesaxsmhsvlitegrlzkvfqoiiwxbzskzoewbkxtphapavbyvhzvgrrfriddnsrftfowhdanvhjvurhljmpxvpddxmzfgwwpkjrfgqptrmumoemhfpojnxzwlrxkcafvbhlwrapubhveattfifsmiounhqusvhywnxhwrgamgnesxmzliyzisqrwvkiyderyotxhwspqrrkeczjysfujvovsfcfouykcqyjoobfdgnlswfzjmyucaxuaslzwfnetekymrwbvponiaojdqnbmboldvvitamntwnyaeppjaohwkrisrlrgwcjqqgxeqerjrbapfzurcwxhcwzugcgnirkkrxdthtbmdqgvqxilllrsbwjhwqszrjtzyetwubdrlyakzxcveufvhqugyawvkivwonvmrgnchkzdysngqdibhkyboyftxcvvjoggecjsajbuqkjjxfvynrjsnvtfvgpgveycxidhhfauvjovmnbqgoxsafknluyimkczykwdgvqwlvvgdmufxdypwnajkncoynqticfetcdafvtqszuwfmrdggifokwmkgzuxnhncmnsstffqpqbplypapctctfhqpihavligbrutxmmygiyaklqtakdidvnvrjfteazeqmbgklrgrorudayokxptswwkcircwuhcavhdparjfkjypkyxhbgwxbkvpvrtzjaetahmxevmkhdfyidhrdeejapfbafwmdqjqszwnwzgclitdhlnkaiyldwkwwzvhyorgbysyjbxsspnjdewjxbhpsvj");
+        // FindTheDifference_1("abcd", "abcde");
 
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 找不同
+    public static char FindTheDifference(string s, string t) {
+        if (s.Length == 0) {
+            return t[0];
+        }
+        Dictionary<char, int> sRes = new Dictionary<char, int>();
+        foreach (var ch in s) {
+            if (sRes.ContainsKey(ch)) {
+                sRes[ch]++;
+            } else {
+                sRes.Add(ch, 1);
+            }
+        }
+
+        foreach (var ch in t) {
+            if (sRes.ContainsKey(ch)) {
+                if (sRes[ch] == 1) {
+                    sRes.Remove(ch);
+                } else {
+                    sRes[ch]--;
+                }
+            } else {
+                sRes.Add(ch, 1);
+            }
+        }
+
+        foreach (var k in sRes) {
+            return k.Key;
+        }
+
+        return ' ';
+    }
+
+    public static char FindTheDifference_1(string s, string t) {
+        if (s.Length == 0) {
+            return t[0];
+        }
+
+        char[] sArr = s.ToCharArray();
+        char[] tArr = t.ToCharArray();
+        Array.Sort(sArr);
+        Array.Sort(tArr);
+
+        for (int i = 0; i < t.Length; i++) {
+            if (i >= s.Length || tArr[i] != sArr[i]) {
+                Debug.Log(i);
+                return tArr[i];
+            }
+        }
+        return ' ';
+    }
+
+    #endregion
+
     #region 整数转罗马
     // 内存更省
     public static string IntToRoman(int num) {
