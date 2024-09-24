@@ -57,6 +57,32 @@ public class Main : MonoBehaviour {
     void Update() {
 
     }
+    #region 只出现一次的数
+    public static int SingleNumber(int[] nums) {
+        HashSet<int> res = new HashSet<int>();
+        foreach (var num in nums) {
+            if (res.Contains(num)) {
+                res.Remove(num);
+            } else {
+                res.Add(num);
+            }
+        }
+        foreach (var num in res) {
+            return num;
+        }
+        return 0;
+    }
+
+    public static int SingleNumber_1(int[] nums) {
+        int res = 0;
+        foreach (var e in nums) {
+            res ^= e;
+        }
+        return res;
+    }
+
+    #endregion
+
     #region 找不同
     public static char FindTheDifference(string s, string t) {
         if (s.Length == 0) {
