@@ -57,6 +57,20 @@ public class Main : MonoBehaviour {
     void Update() {
 
     }
+    
+    #region 丢失的数字
+    public static int MissingNumber(int[] nums) {
+        int n = nums.Length;
+        Array.Sort(nums);
+        for (int i = 0; i < nums.Length; i++) {
+            if (nums[i] != i) {
+                return i;
+            }
+        }
+        return n;
+    }
+    #endregion
+
     #region 只出现一次的数
     public static int SingleNumber(int[] nums) {
         HashSet<int> res = new HashSet<int>();
