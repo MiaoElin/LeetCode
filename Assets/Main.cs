@@ -57,7 +57,18 @@ public class Main : MonoBehaviour {
     void Update() {
 
     }
-    
+
+    #region 位1的个数
+    public static int HammingWeight(int n) {
+        const int BITS = 32;
+        int res = 0;
+        for (int i = 0; i < BITS; i++) {
+            res += (int)(n >> i) & 1;
+        }
+        return res;
+    }
+    #endregion
+
     #region 丢失的数字
     public static int MissingNumber(int[] nums) {
         int n = nums.Length;
