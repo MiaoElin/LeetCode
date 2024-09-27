@@ -58,6 +58,41 @@ public class Main : MonoBehaviour {
 
     }
 
+    #region 电话号码的字母
+    public static IList<string> LetterCombinations(string digits) {
+        List<string> res = new List<string>();
+
+        if (digits.Length == 0) {
+            return res;
+        }
+        Dictionary<char, string> temp = new Dictionary<char, string>() {
+            {'2',"abc"},
+            {'3',"def"},
+            {'4',"ghi"},
+            {'5',"jkl"},
+            {'6',"mno"},
+            {'7',"pqrs"},
+            {'8',"tuv"},
+            {'9',"wxyz"},
+        };
+        res.Add("");
+        int count = 1;
+        for (int i = 0; i < digits.Length; i++) {
+            string cur = temp[digits[i]];
+            for (int j = 0; j < count; j++) {
+                res.Add(res[j] + cur[1].ToString());
+                res.Add(res[j] + cur[2].ToString());
+                if (digits[i] == '7' || digits[i] == '9') {
+                    res.Add(res[j] + cur[3].ToString());
+                }
+                res[j] = (res[j] + cur[0].ToString());
+            }
+            count = res.Count;
+        }
+        return res;
+    }
+    #endregion
+
     #region 位1的个数
     public static int HammingWeight(int n) {
         const int BITS = 32;
