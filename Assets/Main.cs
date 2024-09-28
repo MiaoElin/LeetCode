@@ -52,11 +52,46 @@ public class Main : MonoBehaviour {
          "qhxepbshlrhoecdaodgpousbzfcqjxulatciapuftffahhlmxbufgjuxstfjvljybfxnenlacmjqoymvamphpxnolwijwcecgwbcjhgdybfffwoygikvoecdggplfohemfypxfsvdrseyhmvkoovxhdvoavsqqbrsqrkqhbtmgwaurgisloqjixfwfvwtszcxwktkwesaxsmhsvlitegrlzkvfqoiiwxbzskzoewbkxtphapavbyvhzvgrrfriddnsrftfowhdanvhjvurhljmpxvpddxmzfgwwpkjrfgqptrmumoemhfpojnxzwlrxkcafvbhlwrapubhveattfifsmiounhqusvhywnxhwrgamgnesxmzliyzisqrwvkiyderyotxhwspqrrkeczjysfujvovsfcfouykcqyjoobfdgnlswfzjmyucaxuaslzwfnetekymrwbvponiaojdqnbmboldvvitamntwnyaeppjaohwkrisrlrgwcjqqgxeqerjrbapfzurcwxhcwzugcgnirkkrxdthtbmdqgvqxilllrsbwjhwqszrjtzyetwubdrlyakzxcveufvhqugyawvkivwonvmrgnchkzdysngqdibhkyboyftxcvvjoggecjsajbuqkjjxfvynrjsnvtfvgpgveycxidhhfauvjovmnbqgoxsafknluyimkczykwdgvqwlvvgdmufxdypwnajkncoynqticfetcdafvtqszuwfmrdggifokwmkgzuxnhncmnsstffqpqbplypapctctfhqpihavligbrutxmmygiyaklqtakdidvnvrjfteazeqmbgklrgrorudayokxptswwkcircwuhcavhdparjfkjypkyxhbgwxbkvpvrtzjaetahmxevmkhdfyidhrdeejapfbafwmdqjqszwnwzgclitdhlnkaiyldwkwwzvhyorgbysyjbxsspnjdewjxbhpsvj");
         // FindTheDifference_1("abcd", "abcde");
 
+        FindWords(new string[] { "Hello", "Alaska", "Dad", "Peace" });
+
     }
     // Update is called once per frame
     void Update() {
 
     }
+
+    #region 键盘行
+    public static string[] FindWords(string[] words) {
+
+        List<string> res = new List<string>();
+
+        HashSet<string> temp = new HashSet<string>(){
+            "QqWwEeRrTtYyUuIiOoPp","AaSsDdFfGgHhJjKkLl","ZzXxCcVvBbNnMm"
+        };
+        foreach (var w in words) {
+            foreach (var s in temp) {
+                bool isfind = false;
+                for (int i = 0; i < w.Length; i++) {
+                    if (!s.Contains(w[i])) {
+                        Debug.Log(s + " " + w[i]);
+                        break;
+                    }
+                    if (i == w.Length - 1) {
+                        res.Add(w);
+                        Debug.Log("find" + " " + w + " " + s);
+                        isfind = true;
+                    }
+                }
+                if (isfind) {
+                    break;
+                }
+            }
+        }
+        string[] re = new string[res.Count];
+        res.CopyTo(re);
+        return re;
+    }
+    #endregion
 
     #region 电话号码的字母
     public static IList<string> LetterCombinations(string digits) {
