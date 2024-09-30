@@ -52,12 +52,50 @@ public class Main : MonoBehaviour {
 
         FindWords(new string[] { "Hello", "Alaska", "Dad", "Peace" });
 
+        WordPattern("abba", "dog cat cat dog");
 
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 单词规律
+    public static bool WordPattern(string pattern, string s) {
+        List<string> temp = new List<string>();
+        string cur = "";
+        for (int i = 0; i < s.Length; i++) {
+            if (s[i] == ' ') {
+                temp.Add(cur);
+                cur = "";
+            } else {
+                cur += s[i];
+                if (i == s.Length - 1) {
+                    temp.Add(cur);
+                }
+            }
+        }
+        if (temp.Count != pattern.Length) {
+            return false;
+        }
+        Dictionary<char, string> res = new Dictionary<char, string>();
+        for (int i = 0; i < pattern.Length; i++) {
+            if (res.ContainsKey(pattern[i])) {
+                if (res[pattern[i]] == temp[i]) {
+                    continue;
+                } else {
+                    Debug.Log(temp[i]);
+                    return false;
+                }
+            }
+            if (res.ContainsValue(temp[i])) {
+                Debug.Log(temp[i]);
+                return false;
+            }
+            res.Add(pattern[i], temp[i]);
+        }
+        return true;
+    }
+    #endregion
 
     #region 找到所有数组中消失的数
     public static IList<int> FindDisappearedNumbers(int[] nums) {
@@ -91,12 +129,10 @@ public class Main : MonoBehaviour {
                 bool isfind = false;
                 for (int i = 0; i < w.Length; i++) {
                     if (!s.Contains(w[i])) {
-                        Debug.Log(s + " " + w[i]);
                         break;
                     }
                     if (i == w.Length - 1) {
                         res.Add(w);
-                        Debug.Log("find" + " " + w + " " + s);
                         isfind = true;
                     }
                 }
