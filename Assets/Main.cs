@@ -54,11 +54,51 @@ public class Main : MonoBehaviour {
 
         WordPattern("abba", "dog cat cat dog");
 
+        FindErrorNums(new int[] { 3, 2, 3, 4, 6, 5 });
+
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 错误的集合
+    public static int[] FindErrorNums(int[] nums) {
+        Array.Sort(nums);
+        int[] res = new int[2];
+        HashSet<int> temp = new HashSet<int>();
+        foreach (var num in nums) {
+            temp.Add(num);
+        }
+        for (int i = 0; i < nums.Length; i++) {
+            var num = nums[i];
+            if (temp.Contains(num - 1)) {
+                if (temp.Contains(num + 1)) {
+                    res[0] = num;
+                    res[1] = 1;
+                } else {
+                    res[0] = num;
+                    res[1] = num + 1;
+                }
+
+            } else {
+                if (num == nums[i - 1] && i == nums.Length - 1 || num == nums[i - 1] && num == nums[i + 1]) {
+                    if (num == nums.Length) {
+                        res[0] = num;
+                        res[1] = num - 1;
+                    } else {
+                        res[0] = num;
+                        res[1] = num + 1;
+                    }
+                    return res;
+                }
+                res[0] = num;
+                res[1] = num - 1;
+            }
+        }
+        return res;
+    }
+    #endregion
+
     #region 单词规律
     public static bool WordPattern(string pattern, string s) {
         List<string> temp = new List<string>();
