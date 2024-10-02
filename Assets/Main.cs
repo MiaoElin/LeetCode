@@ -61,38 +61,46 @@ public class Main : MonoBehaviour {
     void Update() {
 
     }
+
+    #region 两个数组的交集
+    public static int[] Intersection(int[] nums1, int[] nums2) {
+        HashSet<int> temp1 = new HashSet<int>();
+        foreach (var num in nums1) {
+            temp1.Add(num);
+        }
+
+        HashSet<int> temp2 = new HashSet<int>();
+        foreach (var num in nums2) {
+            if (temp1.Contains(num)) {
+                temp2.Add(num);
+            }
+        }
+        int[] res = new int[temp2.Count];
+        temp2.CopyTo(res);
+        return res;
+    }
+    #endregion
+
     #region 错误的集合
     public static int[] FindErrorNums(int[] nums) {
-        Array.Sort(nums);
         int[] res = new int[2];
         HashSet<int> temp = new HashSet<int>();
-        foreach (var num in nums) {
-            temp.Add(num);
-        }
         for (int i = 0; i < nums.Length; i++) {
-            var num = nums[i];
-            if (temp.Contains(num - 1)) {
-                if (temp.Contains(num + 1)) {
-                    res[0] = num;
-                    res[1] = 1;
-                } else {
-                    res[0] = num;
-                    res[1] = num + 1;
-                }
+            temp.Add(nums[i]);
+        }
 
+        for (int i = 1; i <= nums.Length; i++) {
+            if (!temp.Contains(i)) {
+                res[1] = i;
+                break;
+            }
+        }
+
+        foreach (var num in nums) {
+            if (temp.Contains(num)) {
+                temp.Remove(num);
             } else {
-                if (num == nums[i - 1] && i == nums.Length - 1 || num == nums[i - 1] && num == nums[i + 1]) {
-                    if (num == nums.Length) {
-                        res[0] = num;
-                        res[1] = num - 1;
-                    } else {
-                        res[0] = num;
-                        res[1] = num + 1;
-                    }
-                    return res;
-                }
                 res[0] = num;
-                res[1] = num - 1;
             }
         }
         return res;
