@@ -56,11 +56,44 @@ public class Main : MonoBehaviour {
 
         FindErrorNums(new int[] { 3, 2, 3, 4, 6, 5 });
 
+        ReplaceWords(new List<string>() { "cat", "bat", "rat" }, "the cattle was rattled by the battery");
+
     }
     // Update is called once per frame
     void Update() {
 
     }
+
+    #region  单词替换
+    public static string ReplaceWords(IList<string> dictionary, string sentence) {
+        HashSet<string> dic = new HashSet<string>();
+        foreach (var s in dictionary) {
+            dic.Add(s);
+        }
+        StringBuilder res = new StringBuilder();
+        StringBuilder cur = new StringBuilder();
+        bool find = false;
+        for (int i = 0; i < sentence.Length; i++) {
+            cur.Append(sentence[i]);
+            if (sentence[i] == ' ' || i == sentence.Length - 1) {
+                if (!find) {
+                    res.Append(cur);
+                }
+                find = false;
+                cur.Clear();
+                continue;
+            }
+            if (!find && dic.Contains(cur.ToString())) {
+                res.Append(cur + " ");
+                find = true;
+            }
+        }
+        if (res[res.Length - 1] == ' ') {
+            res.Remove(res.Length - 1, 1);
+        }
+        return res.ToString();
+    }
+    #endregion
 
     #region 两个数组的交集
     public static int[] Intersection(int[] nums1, int[] nums2) {
