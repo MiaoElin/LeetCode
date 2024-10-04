@@ -70,44 +70,43 @@ public class Main : MonoBehaviour {
         if (s.Length != t.Length) {
             return false;
         }
-
-        StringBuilder t2 = new StringBuilder(s);
-
-        foreach (var cur in t) {
-            if (s.Contains(cur)) {
-                Debug.Log(cur);
-                t2.Remove(cur, 1);
+        Dictionary<char, int> temp = new Dictionary<char, int>();
+        foreach (var cur in s) {
+            if (!t.Contains(cur)) {
+                return false;
+            }
+            if (temp.ContainsKey(cur)) {
+                temp[cur]++;
             } else {
+                temp.Add(cur, 1);
+            }
+        }
+        foreach (var cur in t) {
+            if (!temp.ContainsKey(cur)) {
+                return false;
+            }
+            temp[cur]--;
+            if (temp[cur] < 0) {
                 return false;
             }
         }
-        if (s2.Length == 0 && t2.Length == 0) {
-            return true;
-        } else {
+        return true;
+    }
+    public static bool IsAnagram_1(string s, string t) {
+        if (s.Length != t.Length) {
             return false;
         }
-
-        // Dictionary<char, int> temp = new Dictionary<char, int>();
-        // foreach (var cur in s) {
-        //     if (!t.Contains(cur)) {
-        //         return false;
-        //     }
-        //     if (temp.ContainsKey(cur)) {
-        //         temp[cur]++;
-        //     } else {
-        //         temp.Add(cur, 1);
-        //     }
-        // }
-        // foreach (var cur in t) {
-        //     if (!temp.ContainsKey(cur)) {
-        //         return false;
-        //     }
-        //     temp[cur]--;
-        //     if (temp[cur] < 0) {
-        //         return false;
-        //     }
-        // }
-        // return true;
+        int[] a = new int[26];
+        for (int i = 0; i < s.Length; i++) {
+            a[s[i] - 'a']++;
+            a[t[i] - 'a']--;
+        }
+        foreach (var cur in a) {
+            if (cur != 0) {
+                return false;
+            }
+        }
+        return true;
     }
     #endregion
 
