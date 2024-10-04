@@ -58,11 +58,58 @@ public class Main : MonoBehaviour {
 
         ReplaceWords(new List<string>() { "cat", "bat", "rat" }, "the cattle was rattled by the battery");
 
+        // IsAnagram("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhhhhhhhh");
+        IsAnagram("anagram", "nagaram");
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 有效的字母异位词
+    public static bool IsAnagram(string s, string t) {
+        if (s.Length != t.Length) {
+            return false;
+        }
+
+        StringBuilder t2 = new StringBuilder(s);
+
+        foreach (var cur in t) {
+            if (s.Contains(cur)) {
+                Debug.Log(cur);
+                t2.Remove(cur, 1);
+            } else {
+                return false;
+            }
+        }
+        if (s2.Length == 0 && t2.Length == 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+        // Dictionary<char, int> temp = new Dictionary<char, int>();
+        // foreach (var cur in s) {
+        //     if (!t.Contains(cur)) {
+        //         return false;
+        //     }
+        //     if (temp.ContainsKey(cur)) {
+        //         temp[cur]++;
+        //     } else {
+        //         temp.Add(cur, 1);
+        //     }
+        // }
+        // foreach (var cur in t) {
+        //     if (!temp.ContainsKey(cur)) {
+        //         return false;
+        //     }
+        //     temp[cur]--;
+        //     if (temp[cur] < 0) {
+        //         return false;
+        //     }
+        // }
+        // return true;
+    }
+    #endregion
 
     #region  单词替换
     public static string ReplaceWords(IList<string> dictionary, string sentence) {
