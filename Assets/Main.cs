@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Text;
+using System.Linq;
 
 public class Main : MonoBehaviour {
     // Start is called before the first frame update
@@ -58,13 +59,40 @@ public class Main : MonoBehaviour {
 
         ReplaceWords(new List<string>() { "cat", "bat", "rat" }, "the cattle was rattled by the battery");
 
-        // IsAnagram("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhahhhhhhhhh");
         IsAnagram("anagram", "nagaram");
+
+        TopKFrequent(new int[] { 1, 1, 1, 2, 2, 3 }, 2);
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 前k个高频元素
+    public static int[] TopKFrequent(int[] nums, int k) {
+        Dictionary<int, int> dic = new();
+        for (int i = 0; i < nums.Length; i++) {
+            if (dic.ContainsKey(nums[i])) {
+                dic[nums[i]]++;
+            } else {
+                dic.Add(nums[i], 1);
+            }
+        }
+        //优先队列-从小到大排列
+        var ordic = dic.OrderByDescending(kvp => kvp.Value).ToList();
+
+        //数组倒装
+        int[] res = new int[k];
+        int index = 0;
+        foreach (var val in ordic) {
+            if (index >= k) {
+                break;
+            }
+            res[index++] = val.Key;
+        }
+        return res;
+    }
+    #endregion
+
     #region 有效的字母异位词
     public static bool IsAnagram(string s, string t) {
         if (s.Length != t.Length) {
