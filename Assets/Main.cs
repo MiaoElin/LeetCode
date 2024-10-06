@@ -67,6 +67,21 @@ public class Main : MonoBehaviour {
     void Update() {
 
     }
+    #region 最小基因变化
+    public static int MinMutation(string startGene, string endGene, string[] bank) {
+        if (bank.Length == 0) {
+            return -1;
+        }
+        int res = 0;
+        for (int i = 0; i < startGene.Length; i++) {
+            if (startGene[i] != endGene[i]) {
+                res++;
+            }
+        }
+        return res;
+    }
+    #endregion
+
     #region 前k个高频元素
     public static int[] TopKFrequent(int[] nums, int k) {
         Dictionary<int, int> dic = new();
