@@ -62,23 +62,55 @@ public class Main : MonoBehaviour {
         IsAnagram("anagram", "nagaram");
 
         TopKFrequent(new int[] { 1, 1, 1, 2, 2, 3 }, 2);
+
+        MinMutation("AAAACCCC", "CCCCCCCC", new string[] { "AAAACCCA", "AAACCCCA", "AACCCCCA", "AACCCCCC", "ACCCCCCC", "CCCCCCCC", "AAACCCCC", "AACCCCCC" });
     }
     // Update is called once per frame
     void Update() {
 
     }
     #region 最小基因变化
-    public static int MinMutation(string startGene, string endGene, string[] bank) {
-        if (bank.Length == 0) {
+    public static int MinMutation(string start, string end, string[] bank) {
+        ISet<string> cnt = new HashSet<string>();
+        ISet<string> visited = new HashSet<string>();
+        char[] keys = { 'A', 'C', 'G', 'T' };
+        foreach (string w in bank) {
+            cnt.Add(w);
+        }
+        if (start.Equals(end)) {
+            return 0;
+        }
+        if (!cnt.Contains(end)) {
             return -1;
         }
-        int res = 0;
-        for (int i = 0; i < startGene.Length; i++) {
-            if (startGene[i] != endGene[i]) {
-                res++;
+        Queue<string> queue = new Queue<string>();
+        queue.Enqueue(start);
+        visited.Add(start);
+        int step = 1;
+        while (queue.Count > 0) {
+            int sz = queue.Count;
+            for (int i = 0; i < sz; i++) {
+                string curr = queue.Dequeue();
+                for (int j = 0; j < 8; j++) {
+                    for (int k = 0; k < 4; k++) {
+                        if (keys[k] != curr[j]) {
+                            StringBuilder sb = new StringBuilder(curr);
+                            sb.Replace(curr[j], keys[k], j, 1);
+                            string next = sb.ToString();
+                            if (!visited.Contains(next) && cnt.Contains(next)) {
+                                if (next.Equals(end)) {
+                                    return step;
+                                }
+                                queue.Enqueue(next);
+                                visited.Add(next);
+                            }
+                        }
+                    }
+                }
             }
+            step++;
         }
-        return res;
+        return -1;
     }
     #endregion
 
