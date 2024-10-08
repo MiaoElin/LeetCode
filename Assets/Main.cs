@@ -64,11 +64,47 @@ public class Main : MonoBehaviour {
         TopKFrequent(new int[] { 1, 1, 1, 2, 2, 3 }, 2);
 
         MinMutation("AAAACCCC", "CCCCCCCC", new string[] { "AAAACCCA", "AAACCCCA", "AACCCCCA", "AACCCCCC", "ACCCCCCC", "CCCCCCCC", "AAACCCCC", "AACCCCCC" });
+
+        HasGroupsSizeX(new int[] { 1, 1, 2, 2, 2, 2 });
     }
     // Update is called once per frame
     void Update() {
 
     }
+    #region 卡牌分组
+    public static bool HasGroupsSizeX(int[] deck) {
+        Dictionary<int, int> res = new Dictionary<int, int>();
+        foreach (var num in deck) {
+            if (res.ContainsKey(num)) {
+                res[num]++;
+            } else {
+                res.Add(num, 1);
+            }
+        }
+        Dictionary<int, int> dic = new Dictionary<int, int>();
+        for (int i = 0; i < deck.Length; i++) {
+            if (!dic.ContainsKey(deck[i])) {
+                dic.Add(deck[i], 1);
+            } else {
+                dic[deck[i]]++;
+            }
+        }
+        int tag = -1;
+        foreach (int value in dic.Values) {
+            if (tag == -1) {
+                tag = value;
+            } else {
+                tag = Get(tag, value);
+            }
+        }
+        return tag >= 2 ? true : false;
+    }
+    public static int Get(int x, int y) {
+        return x % y == 0 ? y : Get(y, x % y);
+    }
+
+    #endregion
+
     #region 最小基因变化
     public static int MinMutation(string start, string end, string[] bank) {
         ISet<string> cnt = new HashSet<string>();
